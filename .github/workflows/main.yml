@@ -21,22 +21,34 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.11'
-
+        
+    - name: Stash any local changes
+      run: git stash
+      
     - name: Install dependencies
       run: cd Files && pip install -r requirements.txt
 
-    - name: Run Python script and save output to file
+    - name: Run Config script and save output to file
       run: cd Files && python app.py
+      
+    - name: Run Warp script and save output to file
+      run: cd Files && python warp.py
       
     - name: Run Splitter script and save output to file
       run: cd Files && python sort.py
 
+    - name: Check changes
+      run: |
+        echo "Checking the changes made..."
+        git status
+        ls -l Files/
+        
     - name: Commit and push files
       uses: EndBug/add-and-commit@v7
       with:
         author_name: "Github Actions"
         author_email: "actions@github.com"
-        message: "Updated 9 minutes Ago🤝"
+        message: "Updated 9 minutes Ago ⚡️"
         add: "."
         push: "https://github.com/barry-far/V2ray-Configs.git"
     env:
